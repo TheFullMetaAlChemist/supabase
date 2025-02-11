@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Supabase Test Form</title>
+  <!-- Include the Supabase JS library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/supabase.min.js"></script>
+</head>
+<body>
+  <h1>Submit Data to Supabase</h1>
+  <form id="myForm">
+    <input type="text" id="inputField" name="data" placeholder="Enter some text" required>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    // Replace with your actual Supabase URL and anon key
+    const SUPABASE_URL = 'https://https://whtcqymqhwydhbrjmjcg.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndodGNxeW1xaHd5ZGhicmptamNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzkyOTI5MzgsImV4cCI6MjA1NDg2ODkzOH0.gNwvwnxFcpiacCP_rrCkcsp_meHAB65bMIV4bt_C_W8';
+
+    // Create a Supabase client
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Get the form element
+    const form = document.getElementById('myForm');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();  // Prevent the default form submission
+
+      // Get the value from the input field
+      const inputValue = document.getElementById('inputField').value;
+
+      // Insert the data into the test_table
+      const { data, error } = await supabase
+        .from('test_table')
+        .insert([{ data: inputValue }]);
+
+      // Handle any errors or log the success
+      if (error) {
+        console.error('Error inserting data:', error);
+        alert('There was an error inserting the data. Check the console for details.');
+      } else {
+        console.log('Data inserted:', data);
+        alert('Data successfully inserted!');
+        form.reset();  // Clear the form
+      }
+    });
+  </script>
+</body>
+</html>
